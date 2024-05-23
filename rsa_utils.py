@@ -3,9 +3,11 @@ from math import lcm, gcd
 
 def encrypt(m, e, n):
   number = int.from_bytes(m.encode('utf-8'))
-  if (number >= n) :
+  if (number >= n):
     print(f'WARNING: m > n, overflow occured ({number} >= {n})')
-  return (number ** e) % n
+  elif (number ** e <= n):
+    print(f'NOTICE: encryption is weak (m ** e < n)')
+  return pow(number, e, n)
 
 def decrypt(m, d, n):
   number = pow(m, d, n)
@@ -35,6 +37,34 @@ def nth_int_root(x, n):
     new_result = root ** n
   return root
 
+def print_attack_list():
+  print("""-----------------------------------------------------------------
+  attack1(M, e, n, _range, plaintext) - when m ** e is not much bigger than n
+      - this may happen if the plaintext is short, lacks padding, and e is small
+  attack1_multithread(M, e, n, _range, plaintext) -- multithreaded attack1()
+-----------------------------------------------------------------""")
 
-
+def attack1(M=False, e=False, n=False, _range=False, plaintext=False):
+  if not M:
+    M = int(input("give integer M\n"))
+  if not e:
+    e = int(input("give integer e\n"))
+  if not n:
+    n = int(input("give integer n\n"))
+  if not _range:
+    _range = int(input("give number of iterations\n"))
+  if not plaintext:
+    plaintext = input("give plaintext\n")
+  plaintext = plaintext.encode('utf-8')
+  
+  for i in range(_range):
+    x = M + (i * n)
+    number = nth_int_root(x, e)
+    dec = int.to_bytes(number, (number.bit_length() + 7) // 8)
+    if plaintext in dec:
+      print(i, '--', int.to_bytes(number, (number.bit_length() + 7) // 8))
+    elif i % 1000 == 0:
+      print(i)
+      #print(dec[:32])
+    
 
