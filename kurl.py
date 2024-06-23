@@ -35,18 +35,21 @@ if args.args:
     key, value = arg.split('=')
     data[key] = value
 
-match args.method.upper():
-  case 'GET':
+method = args.method.upper()
+try:
+  if method == 'GET':
     response = requests.get(url, params=data)
-  case 'POST':
+  elif method == 'POST':
     response = requests.post(url, data=data)
-  case _:
+  else:
     req = requests.Request(method=custom_method, url=url, headers=headers)
     prepped = req.prepare()
-
     with requests.Session() as session:
         response = session.send(prepped)
-
+except requests.exceptions.ConnectionError:
+  print("Error: connection refused")
+  print(f"URL: {url}")
+  exit(1)
 
 # Print the response
 def displayResponse(response):
