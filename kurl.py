@@ -32,7 +32,7 @@ else:
 data = dict()
 if args.args:
   for arg in args.args:
-    key, value = arg.split('=')
+    key, value = arg.split('=', 1)
     data[key] = value
 
 method = args.method.upper()
