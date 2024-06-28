@@ -14,8 +14,8 @@ parser = argparse.ArgumentParser(
   """
 )
 
-parser.add_argument('hostname',       help='e.g. google.com', default='localhost', nargs='?')
-parser.add_argument('resource',       help='e.g. /login',     default='/',         nargs='?')
+parser.add_argument('hostname',       help='e.g. google.com')
+parser.add_argument('resource',       help='e.g. /login',     default='/', nargs='?')
 parser.add_argument('-p', '--port',   help='e.g. 8000',       default='80')
 parser.add_argument('-m', '--method', help='e.g. GET',        default='GET')
 parser.add_argument('-a', '--args',   help='e.g. key=value',  action='append')
