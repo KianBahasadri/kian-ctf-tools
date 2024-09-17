@@ -20,7 +20,7 @@ parser.add_argument('-p', '--port',   help='e.g. 8000',       default='80')
 parser.add_argument('-m', '--method', help='e.g. GET',        default='GET')
 parser.add_argument('-a', '--args',   help='e.g. key=value',  action='append')
 parser.add_argument('-t', '--text',   help='change html to md', action='store_true')
-parser.add_argument('-v', '--verbose',help='wont truncate output', action='store_true')
+parser.add_argument('-v', '--verbose',help='more output, MAX: 2', default=0, action='count')
 
 args = parser.parse_args()
 
@@ -36,6 +36,10 @@ if args.args:
     data[key] = value
 
 method = args.method.upper()
+if args.verbose >= 2:
+  print(f"URL: {url}")
+  print(f"ARGS: {data}")
+
 try:
   if method == 'GET':
     response = requests.get(url, params=data)
