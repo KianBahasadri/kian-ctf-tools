@@ -63,13 +63,16 @@ attack1(M, e, n, _range, plaintext):
           plaintext (str, optional): The plaintext message. Default is False (will prompt for input).
           Returns:
               None
-attack2(n):
+factor(n):
         Attempts to factor the given integer n
         Uses factordb and then attempts to manually factor
         Warning: kind of shit
 factorDB(n):
         requests the factorization from http://factordb.com/api
         checks if its valid and returns it if it is
+
+weiner_attack(M, e, n):
+        Performs an attack where it finds d if its too small
 
 -----------------------------------------------------------------""")
 
@@ -92,11 +95,11 @@ def attack1(M=False, e=False, n=False, _range=False, plaintext=False):
     dec = int.to_bytes(number, (number.bit_length() + 7) // 8)
     if plaintext in dec:
       print(i, '--', int.to_bytes(number, (number.bit_length() + 7) // 8))
-    elif i % 1000 == 0:
+    elif i % 10 == 0:
       print(i)
       #print(dec[:32])
 
-def attack2(n):
+def factor(n):
   db = factorDB(n)
   if db:
     print(db)
@@ -118,6 +121,13 @@ def factorDB(n):
   else:
     return datadict['factors']
 
+def weiner_attack(M, e, n):
+  import sys
+  # caution: path[0] is reserved for script path (or '' in REPL)
+  sys.path.insert(1, './rsa-wiener-attack/')
+  from RSAwienerHacker import hack_RSA
+  d = hack_RSA(e, n)
+  print(decrypt(M, d, n))
 
 #-----------------------------------------------------------------
 print_function_list()

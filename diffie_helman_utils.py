@@ -41,9 +41,8 @@ def attack1(A, B, p, g, _range):
         print(f"exponents: {exponents}, factors: {factors}, y: {y}")
     return exponents
 
-
-
   import multiprocessing
+
 
   for i in range(_range):
     x = M + (i * n)

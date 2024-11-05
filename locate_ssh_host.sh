@@ -10,15 +10,17 @@ then
 fi
 
 username=$1
+subnet=$(ip -o -f inet addr show | awk '/scope global/ {print $4}' | cut -d'/' -f1 | cut -d'.' -f1-3
+)
 
 if [[ "$2" == password ]]
 then
   password="$3"
   echo username: "$username"
   echo password: "$password"
-  echo looking in 192.168.0.0/24
+  echo looking in "$subnet".0/24
 
-  for ip in 192.168.0.{0..255}
+  for ip in "$subnet".{0..255}
   do
     sshpass -p"$password" \
     ssh "$username"@$ip \
@@ -37,7 +39,7 @@ then
   echo keyfile: "$keyfile"
   echo looking in 192.168.0.0/24
 
-  for ip in 192.168.0.{0..255}
+  for ip in "$subnet".{0..255}
   do
     ssh "$username"@$ip \
       -q \
